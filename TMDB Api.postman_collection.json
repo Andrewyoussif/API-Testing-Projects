@@ -1,0 +1,738 @@
+{
+  "info": {
+    "_postman_id": "7f66bf9d-b638-421d-81e5-bd511510839a",
+    "name": "TMDB Api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49513427",
+    "_collection_link": "https://go.postman.co/collection/49513427-7f66bf9d-b638-421d-81e5-bd511510839a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Ping",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "movieByKeyword",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Verify that status code 200\",function(){\r",
+              "    pm.response.to.have.status(200);\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Response body have array of results\",function(){\r",
+              "    pm.expect(pm.response.json().results).to.be.an('array');\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Response include(ID, Title, Release_Date,Overview)\",function(){\r",
+              "    pm.expect(pm.response.json().results[0]).to.have.property('id' && 'title' && 'overview' && 'release_date');\r",
+              "})\r",
+              "\r",
+              "pm.test(\"total_result > 0\",function(){\r",
+              "    pm.expect(pm.response.json().total_results).to.be.above(0);\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/search/movie?query=inception&language=en-US",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "search",
+            "movie"
+          ],
+          "query": [
+            {
+              "key": "query",
+              "value": "inception"
+            },
+            {
+              "key": "language",
+              "value": "en-US"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "movieBYName",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"response include one or more results\",function(){\r",
+              "    pm.expect(pm.response.json().results.length).to.be.at.least(1);\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Response include(ID, Name, first_air_date,Overview)\",function(){\r",
+              "    pm.expect(pm.response.json().results[0]).to.have.property('id' && 'Name' && 'overview' && 'first_air_date');\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supabase_service_role_api_key_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/search/tv?query=breaking+bad&language=en-US",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "search",
+            "tv"
+          ],
+          "query": [
+            {
+              "key": "query",
+              "value": "breaking+bad"
+            },
+            {
+              "key": "language",
+              "value": "en-US"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "movieByID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response include(title, Overview, release_date,runtime, budget, revenue)\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('title' && 'Overview' && 'release_date' && 'runtime'&& 'budget'&& 'revenue');\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Validate genres array is not empty\",function(){\r",
+              "    pm.expect(pm.response.json().genres).to.have.length.above(0);\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Validate production_companies is present\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('production_companies');\r",
+              "})\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/movie/27205",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "movie",
+            "27205"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "movieCredits",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response includes cast and crew\",function(){",
+              "    pm.expect(pm.response.json()).to.have.property('cast' && 'crew');",
+              "})",
+              "",
+              "pm.test(\"Response includes id, name, character, order\",function(){",
+              "    pm.expect(pm.response.json().cast[0]).to.have.property('id' && 'name' && 'crecharacterw' && 'order');",
+              "})",
+              "",
+              "pm.test(\"Response includes id, name, job, department\",function(){",
+              "    pm.expect(pm.response.json().crew[0]).to.have.property('id' && 'name' && 'job' && 'department');",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/movie/27205/credits",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "movie",
+            "27205",
+            "credits"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "popularMovies",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains results with 20 items per page\",function(){\r",
+              "    pm.expect(pm.response.json().results.length).to.eql(20);\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Validate presence of (page, total_pages, total_results)\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('page' && 'total_pages' && 'total_results')\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Each movie includes (id, title, vote_average, popularity)\",function(){\r",
+              "    pm.expect(pm.response.json().results[0]).to.have.property('id' && 'title' && 'vote_average' && 'popularity')\r",
+              "})\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/movie/popular?language=en-US&page=1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "movie",
+            "popular"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en-US"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TVShowByID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence (name, overview, first_air_date, number_of_seasons)\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('name' && 'overview' && 'first_air_date' && 'number_of_seasons')\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Validate genres is not empty\",function(){\r",
+              "    pm.expect(pm.response.json().genres).to.not.be.empty\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Confirm (episode_run_time, networks, created_by) fields exist\", function () {\r",
+              "    pm.expect(pm.response.json()).to.have.property('episode_run_time' && 'created_by' && 'networks')\r",
+              "})\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{json_web_token_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/tv/500",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "tv",
+            "500"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Movie Genres List",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response includes genres array\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('genres')\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Validate genres like 'Action', 'Comedy', 'Drama' are present\", function () {\r",
+              "    const genreNames = pm.response.json().genres.map(g => g.name);\r",
+              "\r",
+              "    pm.expect(genreNames).to.include('Action');\r",
+              "    pm.expect(genreNames).to.include('Comedy');\r",
+              "    pm.expect(genreNames).to.include('Drama');\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate genres have (id, name) fields\", function () {\r",
+              "    const genres = pm.response.json().genres;\r",
+              "\r",
+              "    genres.forEach(genre => {\r",
+              "        pm.expect(genre).to.have.property('id');\r",
+              "        pm.expect(genre).to.have.property('name');\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm list is not empty\",function(){\r",
+              "    pm.expect(pm.response.json().genres).to.not.empty\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/genre/movie/list?language=en",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "genre",
+            "movie",
+            "list"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Discover Movie BY Genre",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains results filtered by the given genre\", function () {\r",
+              "    const genres = pm.response.json().results;\r",
+              "\r",
+              "    genres.forEach(genre => {\r",
+              "        pm.expect(genre.genre_ids).to.include(28);\r",
+              "        \r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate genres have (id, name) fields\", function () {\r",
+              "    const genres = pm.response.json().results;\r",
+              "\r",
+              "    genres.forEach(genre => {\r",
+              "        pm.expect(genre).to.have.property('id');\r",
+              "        pm.expect(genre).to.have.property('title');\r",
+              "        pm.expect(genre).to.have.property('genre_ids');\r",
+              "        pm.expect(genre).to.have.property('vote_average');\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate pagination fields: page, total_pages, total_results\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "\r",
+              "    pm.expect(response).to.have.property('page').that.is.a('number');\r",
+              "    pm.expect(response).to.have.property('total_pages').that.is.a('number');\r",
+              "    pm.expect(response).to.have.property('total_results').that.is.a('number');\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/discover/movie?with_genres=28&sort_by=popularity.desc",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "discover",
+            "movie"
+          ],
+          "query": [
+            {
+              "key": "with_genres",
+              "value": "28"
+            },
+            {
+              "key": "sort_by",
+              "value": "popularity.desc"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Now Playing Movies",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains results and dates{} object\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('results' && 'dates')\r",
+              "    pm.expect(pm.response.json().results).to.be.an('array')\r",
+              "    pm.expect(pm.response.json().dates).to.be.an('object')\r",
+              "})\r",
+              "\r",
+              "pm.test(\"dates includes: maximum and minimum (date range) fields\",function(){\r",
+              "    pm.expect(pm.response.json().dates).to.have.property('maximum' && 'minimum')\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Each movie includes: id, title, release_date, vote_count\", function () {\r",
+              "    const genres = pm.response.json().results;\r",
+              "\r",
+              "    genres.forEach(genre => {\r",
+              "        pm.expect(genre).to.have.property('id');\r",
+              "        pm.expect(genre).to.have.property('title');\r",
+              "        pm.expect(genre).to.have.property('release_date');\r",
+              "        pm.expect(genre).to.have.property('vote_count');\r",
+              "    });\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Confirm results are within the valid date range\", function () {\r",
+              "    const response = pm.response.json();\r",
+              "    const minDate = new Date(response.dates.minimum);\r",
+              "    const maxDate = new Date(response.dates.maximum);\r",
+              "\r",
+              "    response.results.forEach(movie => {\r",
+              "        if (!movie.release_date) return; \r",
+              "\r",
+              "        const releaseDate = new Date(movie.release_date);\r",
+              "        pm.expect(releaseDate).to.be.at.least(minDate);\r",
+              "        pm.expect(releaseDate).to.be.at.most(maxDate);\r",
+              "    });\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{supabase_service_role_api_key_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/movie/now_playing?language=en-US&page=1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "movie",
+            "now_playing"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "en-US"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Person Details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validate presence of: name, biography, birthday, place_of_birth\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('name' && 'biography' && 'birthday' && 'place_of_birth')\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Confirm known_for_department field exists\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('known_for_department')\r",
+              "    pm.expect(pm.response.json().known_for_department).is.not.eql(\"null\")\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Validate popularity score is a number\",function(){\r",
+              "    pm.expect(pm.response.json().popularity).is.a(\"number\")\r",
+              "})\r",
+              "\r",
+              "pm.test(\"Confirm also_known_as array is present\",function(){\r",
+              "    pm.expect(pm.response.json()).to.have.property('also_known_as')\r",
+              "    pm.expect(pm.response.json().also_known_as).is.an(\"array\")\r",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/person/9",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "person",
+            "9"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Movie to Wish List",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{auth_secret_12b1}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{  \"media_type\": \"movie\",  \"media_id\": 550,  \"watchlist\": true}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/account/andrewyoussif11/watchlist",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "account",
+            "andrewyoussif11",
+            "watchlist"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "supabase_service_role_api_key_12b1",
+      "secret": true
+    },
+    {
+      "key": "auth_secret_12b1",
+      "secret": true
+    },
+    {
+      "key": "json_web_token_12b1",
+      "secret": true
+    }
+  ]
+}
