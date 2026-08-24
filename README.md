@@ -58,6 +58,8 @@ Skills Demonstrated
 - End-to-End Testing
 - Positive & Negative Testing
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Tools & Technologies
 
 - Postman
@@ -68,10 +70,25 @@ Tools & Technologies
 - Git
 - GitHub
 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Repository Structure
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  API-Testing-Projects/
+│
+├── README.md
+│
+├── TMDB-API-Testing/
+│   └── TMDB Api.postman_collection.json
+│
+└── Library-API-Testing/
+    └── libraryAPI.collection.json
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 About Me
 
 Andrew Youssif
 
-Software Tester | QC Engineer
+QC Engineer
 
 This repository demonstrates my practical experience in API Testing and my ability to design, execute, validate, and automate API test scenarios using Postman.
